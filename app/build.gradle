@@ -37,9 +37,26 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        primary {
+            dimension "version"
+            manifestPlaceholders.screenOrientation = "portrait"
+        }
+        dev {
+            dimension "version"
+            versionNameSuffix "-dev"
+            manifestPlaceholders.screenOrientation = "unspecified"
         }
     }
 }
