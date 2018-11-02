@@ -4,7 +4,21 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+def keystoreProperties = new Properties()
+
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
+    signingConfigs {
+        config {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
     def getCommitsCount = { ->
         def stdout = new ByteArrayOutputStream()
         exec {
@@ -13,7 +27,6 @@ android {
         }
         return stdout.toString().trim().toInteger()
     }
-
     def getTag = { ->
         def stdout = new ByteArrayOutputStream()
         exec {
@@ -25,7 +38,6 @@ android {
             return result[0] + ".0"
         return result[0] + "." + result[1]
     }
-
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.ketrio.androidapp"
@@ -44,9 +56,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
-
     flavorDimensions "version"
     productFlavors {
         primary {
@@ -62,8 +74,8 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
