@@ -33,6 +33,7 @@ android {
         targetSdkVersion 28
         versionCode getCommitsCount()
         versionName getTag()
+        setProperty("archivesBaseName", "$applicationId-$versionName")
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
