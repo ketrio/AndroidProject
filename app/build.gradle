@@ -5,13 +5,34 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    def getCommitsCount = { ->
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'rev-list', 'HEAD', '--count'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim().toInteger()
+    }
+
+    def getTag = { ->
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'describe', '--tags'
+            standardOutput = stdout
+        }
+        def result = stdout.toString().trim().split('-');
+        if (result.length < 2)
+            return result[0] + ".0"
+        return result[0] + "." + result[1]
+    }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.ketrio.androidapp"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode getCommitsCount()
+        versionName getTag()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
