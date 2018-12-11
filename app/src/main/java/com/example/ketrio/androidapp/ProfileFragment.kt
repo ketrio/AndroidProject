@@ -12,13 +12,13 @@ import android.view.ViewGroup
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [BlankFragment.OnFragmentInteractionListener] interface
+ * [ProfileFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [BlankFragment.newInstance] factory method to
+ * Use the [ProfileFragment.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class BlankFragment : Fragment() {
+class ProfileFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,10 +30,7 @@ class BlankFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_blank, container, false)
-    }
-
-    fun onButtonPressed(uri: Uri) {
+        return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
     override fun onAttach(context: Context) {

@@ -87,4 +87,6 @@ dependencies {
 
     implementation "android.arch.navigation:navigation-fragment-ktx:$nav_version"
     implementation "android.arch.navigation:navigation-ui-ktx:$nav_version"
+
+    implementation 'com.mikhaellopez:circularimageview:3.2.0'
 }

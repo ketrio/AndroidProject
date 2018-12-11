@@ -2,10 +2,12 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
-            app:startDestination="@id/phoneInfoFragment">
+            app:startDestination="@id/profileFragment">
 
     <fragment android:id="@+id/blankFragment" android:name="com.example.ketrio.androidapp.BlankFragment"
               android:label="fragment_blank" tools:layout="@layout/fragment_blank"/>
     <fragment android:id="@+id/phoneInfoFragment" android:name="com.example.ketrio.androidapp.phoneInfoFragment"
               android:label="fragment_phone_info" tools:layout="@layout/fragment_phone_info"/>
+    <fragment android:id="@+id/profileFragment" android:name="com.example.ketrio.androidapp.ProfileFragment"
+              android:label="fragment_profile" tools:layout="@layout/fragment_profile"/>
 </navigation>
