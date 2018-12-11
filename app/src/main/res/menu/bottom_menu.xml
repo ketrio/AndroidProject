@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="IMEI" android:id="@+id/phoneInfoFragment" android:icon="@drawable/ic_info_black_24dp"/>
+    <item android:title="IMEI" android:id="@+id/phoneInfoFragment"
+          android:icon="@drawable/baseline_smartphone_black_48"/>
     <item android:title="Profile" android:id="@+id/profileFragment"
-          android:icon="@android:drawable/ic_menu_my_calendar"/>
-    <item android:title="Blank" android:id="@+id/blankFragment" android:icon="@drawable/ic_filter_none_black_24dp"/>
+          android:icon="@drawable/baseline_account_circle_black_36"/>
+    <item android:title="Blank" android:id="@+id/blankFragment" android:icon="@drawable/baseline_clear_black_36"/>
 </menu>

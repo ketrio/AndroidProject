@@ -18,14 +18,14 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/profile_background" />
 
-            <com.mikhaellopez.circularimageview.CircularImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_marginTop="-75dp"
+            <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_marginTop="-120dp"
                     android:elevation="10dp"
                     android:src="@drawable/profile_image"/>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -59,10 +59,10 @@
                             android:orientation="horizontal">
 
                         <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:layout_marginEnd="15dp"
-                                android:src="@android:drawable/stat_sys_speakerphone"
+                                android:src="@drawable/baseline_call_black_18"
                                 android:tint="@color/colorLightBlack"/>
 
                         <TextView
@@ -81,11 +81,11 @@
                             android:orientation="horizontal">
 
                         <ImageView
-                                android:layout_width="15dp"
-                                android:layout_height="15dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:layout_marginEnd="15dp"
                                 android:layout_marginRight="15dp"
-                                android:src="@android:drawable/ic_dialog_email"
+                                android:src="@drawable/baseline_chat_black_18"
                                 android:tint="@color/colorLightBlack"/>
 
                         <TextView
@@ -111,7 +111,7 @@
 
                 </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
