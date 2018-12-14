@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/profile_layout"
         xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
@@ -19,7 +18,6 @@
             <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:foreground="@color/colorTransparentBlack"
                     android:scaleType="centerCrop"
                     android:src="@drawable/profile_background" />
 
@@ -53,8 +51,7 @@
                             android:elevation="10dp"
                             android:layout_gravity="center_horizontal"
                             android:text="Vlad Gutkovsky"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                            android:textColor="@color/colorAccent"/>
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
 
                     <LinearLayout
                             android:layout_width="wrap_content"
@@ -67,15 +64,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="15dp"
-                                android:src="@drawable/baseline_call_black_18"
-                                android:tint="@color/colorLightBlack"/>
+                                android:src="@drawable/baseline_call_black_18"/>
 
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="+37533......"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                                android:textColor="@color/colorNormalText"/>
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -90,15 +85,13 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="15dp"
                                 android:layout_marginRight="15dp"
-                                android:src="@drawable/baseline_chat_black_18"
-                                android:tint="@color/colorLightBlack"/>
+                                android:src="@drawable/baseline_chat_black_18"/>
 
                         <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="vladgutkovskii@gmail.com"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                                android:textColor="@color/colorNormalText"/>
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -122,7 +115,6 @@
     </androidx.core.widget.NestedScrollView>
 
 
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_action_button"
             app:srcCompat="@drawable/baseline_edit_black_24"
@@ -130,6 +122,6 @@
             android:layout_height="56dp"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
-            app:backgroundTint="@color/colorAccent"/>
+            app:backgroundTint="@color/accent"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

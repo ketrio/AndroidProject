@@ -3,6 +3,7 @@ package com.example.ketrio.androidapp
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -12,11 +13,10 @@ import com.google.android.material.snackbar.Snackbar
 
 
 class MainActivity : AppCompatActivity(),
-    BlankFragment.OnFragmentInteractionListener,
-    phoneInfoFragment.OnFragmentInteractionListener,
-    ProfileFragment.OnFragmentInteractionListener,
-    BlankFragment2.OnFragmentInteractionListener,
-    BlankFragment3.OnFragmentInteractionListener {
+    BlankFragment.OnFragmentInteractionListener, phoneInfoFragment.OnFragmentInteractionListener,
+    ProfileFragment.OnFragmentInteractionListener, BlankFragment2.OnFragmentInteractionListener,
+    BlankFragment3.OnFragmentInteractionListener, EditProfileFragment.OnFragmentInteractionListener
+{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

@@ -9,9 +9,12 @@
     <fragment android:id="@+id/phoneInfoFragment" android:name="com.example.ketrio.androidapp.phoneInfoFragment"
               android:label="fragment_phone_info" tools:layout="@layout/fragment_phone_info"/>
     <fragment android:id="@+id/profileFragment" android:name="com.example.ketrio.androidapp.ProfileFragment"
-              android:label="fragment_profile" tools:layout="@layout/fragment_profile"/>
+              android:label="fragment_profile" tools:layout="@layout/fragment_profile">
+    </fragment>
     <fragment android:id="@+id/blankFragment2" android:name="com.example.ketrio.androidapp.BlankFragment2"
               android:label="fragment_blank_fragment2" tools:layout="@layout/fragment_blank_fragment2"/>
     <fragment android:id="@+id/blankFragment3" android:name="com.example.ketrio.androidapp.BlankFragment3"
               android:label="fragment_blank_fragment3" tools:layout="@layout/fragment_blank_fragment3"/>
+    <fragment android:id="@+id/editProfileFragment" android:name="com.example.ketrio.androidapp.EditProfileFragment"
+              android:label="fragment_edit_profile" tools:layout="@layout/fragment_edit_profile"/>
 </navigation>
