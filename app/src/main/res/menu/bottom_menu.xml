@@ -5,5 +5,4 @@
           android:icon="@drawable/baseline_smartphone_black_48"/>
     <item android:title="Profile" android:id="@+id/profileFragment"
           android:icon="@drawable/baseline_account_circle_black_36"/>
-    <item android:title="Blank" android:id="@+id/blankFragment" android:icon="@drawable/baseline_clear_black_36"/>
 </menu>
