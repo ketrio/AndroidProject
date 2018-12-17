@@ -11,6 +11,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
+                  android:configChanges="keyboard|orientation|screenSize"
+                  android:windowSoftInputMode="adjustResize"
                   android:screenOrientation="${screenOrientation}">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
