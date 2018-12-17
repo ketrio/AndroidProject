@@ -1,10 +1,12 @@
 package com.example.ketrio.androidapp
 
+import android.Manifest
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -18,6 +20,7 @@ import com.example.ketrio.androidapp.data.entity.User
 import com.example.ketrio.androidapp.utils.bitmapToBytes
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import org.jetbrains.anko.AlertBuilder
 import org.jetbrains.anko.doAsync
 
 
@@ -60,6 +63,26 @@ class MainActivity : AppCompatActivity(),
                     userImage)
                 db.userDao().insert(user)
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        val navHostFragment = supportFragmentManager.findFragmentById(nav_host_fragment) as NavHostFragment
+        val currentDestination = navHostFragment.navController.currentDestination
+        val currentFragment = navHostFragment.childFragmentManager.fragments[0]
+
+        if (currentDestination?.id == R.id.edit_profile_fragment) {
+            if ((currentFragment as EditProfileFragment).isDirty) {
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage("You have unsaved changes")
+                    .setPositiveButton("Keep") { _, _ -> }
+                    .setNegativeButton("Discard") { _, _ -> super.onBackPressed()}
+                builder.create().show()
+            } else {
+                super.onBackPressed()
+            }
+        } else {
+            super.onBackPressed()
         }
     }
 
