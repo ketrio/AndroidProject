@@ -25,9 +25,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.example.ketrio.androidapp.utils.bitmapToBytes
-import com.example.ketrio.androidapp.utils.bytesToBitmap
-import com.example.ketrio.androidapp.utils.resize
+import com.example.ketrio.androidapp.utils.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.jetbrains.anko.imageBitmap
 import java.io.File
@@ -70,13 +68,46 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
                 text_input_phone.setText(user?.phoneNumber)
                 imageview_profile_image.setImageBitmap(bytesToBitmap(user?.profileImage!!))
 
-                text_input_full_name.addTextChangedListener(textWatcher)
-                text_input_phone.addTextChangedListener(textWatcher)
-                text_input_email.addTextChangedListener(textWatcher)
+                text_input_full_name.addTextChangedListener(object: TextWatcher {
+                    override fun afterTextChanged(s: Editable?) {
+                        isDirty = true
+                        if (!isValidFullname(s.toString())) {
+                            text_input_full_name_layout.setError("Fullname should consist at least of 2 words")
+                        } else {
+                            text_input_full_name_layout.setError(null)
+                        }
+                    }
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+                })
+                text_input_phone.addTextChangedListener(object: TextWatcher {
+                    override fun afterTextChanged(s: Editable?) {
+                        isDirty = true
+                        if (!isValidMobile(s.toString())) {
+                            text_input_phone_layout.setError("Invalid phone number")
+                        } else {
+                            text_input_phone_layout.setError(null)
+                        }
+                    }
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+                })
+                text_input_email.addTextChangedListener(object: TextWatcher {
+                    override fun afterTextChanged(s: Editable?) {
+                        isDirty = true
+                        if (!isValidEmail(s.toString())) {
+                            text_input_email_layout.setError("Invalid email")
+                        } else {
+                            text_input_email_layout.setError(null)
+                        }
+                    }
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+                })
             }
         }
 
-        view.findViewById<FloatingActionButton>(R.id.floating_action_button).setOnClickListener {
+        view.findViewById<View>(R.id.floating_action_button).setOnClickListener {
             user?.run {
                 this.fullName = text_input_full_name.text.toString()
                 this.phoneNumber = text_input_phone.text.toString()

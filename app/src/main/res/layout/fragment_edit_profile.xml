@@ -40,6 +40,7 @@
                             android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/text_input_full_name_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Fullname">
@@ -54,8 +55,10 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/text_input_email_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:errorEnabled="true"
                             android:hint="Email">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -69,6 +72,7 @@
 
 
                     <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/text_input_phone_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Phone">
