@@ -7,6 +7,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
              tools:context=".ProfileFragment">
 
+
     <androidx.core.widget.NestedScrollView android:layout_width="match_parent"
                                            android:layout_height="match_parent">
         <LinearLayout
@@ -22,11 +23,11 @@
                     android:src="@drawable/profile_background" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageview_profile_image"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
                     android:layout_marginTop="-120dp"
-                    android:elevation="10dp"
-                    android:src="@drawable/profile_image"/>
+                    android:elevation="10dp"/>
 
             <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
@@ -45,12 +46,12 @@
                         android:orientation="vertical">
 
                     <TextView
+                            android:id="@+id/textview_full_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:elevation="10dp"
                             android:layout_gravity="center_horizontal"
-                            android:text="Vlad Gutkovsky"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"/>
 
                     <LinearLayout
@@ -67,9 +68,9 @@
                                 android:src="@drawable/baseline_call_black_18"/>
 
                         <TextView
+                                android:id="@+id/textview_phone_number"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="+37533......"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
                     </LinearLayout>
 
@@ -88,9 +89,9 @@
                                 android:src="@drawable/baseline_chat_black_18"/>
 
                         <TextView
+                                android:id="@+id/textview_email"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="vladgutkovskii@gmail.com"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
                     </LinearLayout>
 

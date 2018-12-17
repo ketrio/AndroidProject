@@ -1,5 +1,6 @@
 package com.example.ketrio.androidapp
 
+import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
@@ -12,38 +13,41 @@ import android.content.DialogInterface
 import java.util.*
 import android.content.Intent
 import android.provider.MediaStore
+import com.example.ketrio.androidapp.data.AppDatabase
+import com.example.ketrio.androidapp.data.entity.User
+import com.google.android.material.textfield.TextInputEditText
+import kotlinx.android.synthetic.main.fragment_edit_profile.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.image
+import org.jetbrains.anko.uiThread
+import android.graphics.Bitmap
+import android.text.Editable
+import android.text.TextWatcher
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.example.ketrio.androidapp.utils.bitmapToBytes
+import com.example.ketrio.androidapp.utils.bytesToBitmap
+import com.example.ketrio.androidapp.utils.resize
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.jetbrains.anko.imageBitmap
+import java.io.File
 
 
-
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [EditProfileFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [EditProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class EditProfileFragment : androidx.fragment.app.Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+
+    private var user: User? = null
+
+    var isDirty = false
 
     private val REQUEST_IMAGE_PHOTO = 1
     private val REQUEST_IMAGE_GALLERY = 2
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val textWatcher = object: TextWatcher {
+        override fun afterTextChanged(s: Editable?) {}
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            isDirty = true
         }
     }
 
@@ -51,19 +55,39 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_edit_profile, container, false)
 
-        view.findViewById<View>(R.id.imageview_account_profile).setOnClickListener {
+        view.findViewById<View>(R.id.imageview_profile_image).setOnClickListener {
             showPictureDialog()
         }
 
-        return view
-    }
+        doAsync {
+            user = AppDatabase.getInstance(context!!).userDao().get()
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-//        listener?.onFragmentInteraction(uri)
+            uiThread {
+                text_input_full_name.setText(user?.fullName)
+                text_input_email.setText(user?.email)
+                text_input_phone.setText(user?.phoneNumber)
+                imageview_profile_image.setImageBitmap(bytesToBitmap(user?.profileImage!!))
+
+                text_input_full_name.addTextChangedListener(textWatcher)
+                text_input_phone.addTextChangedListener(textWatcher)
+                text_input_email.addTextChangedListener(textWatcher)
+            }
+        }
+
+        view.findViewById<FloatingActionButton>(R.id.floating_action_button).setOnClickListener {
+            user?.run {
+                this.fullName = text_input_full_name.text.toString()
+                this.phoneNumber = text_input_phone.text.toString()
+                this.email = text_input_email.text.toString()
+
+                AppDatabase.getInstance(context!!).userDao().update(this)
+                activity?.findViewById<View>(R.id.nav_host_fragment)?.findNavController()?.navigate(R.id.profile_fragment)
+            }
+        }
+
+        return view
     }
 
     override fun onAttach(context: Context) {
@@ -80,40 +104,7 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
         listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
     interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        fun onFragmentInteraction(uri: Uri)
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EditProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EditProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 
     private fun dispatchTakePhotoFromCameraIntent() {
@@ -127,6 +118,29 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         )
         this.startActivityForResult(galleryIntent, REQUEST_IMAGE_GALLERY)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_OK) {
+            return
+        }
+        var compressedImage = bytesToBitmap(user?.profileImage!!)
+        if (requestCode == REQUEST_IMAGE_PHOTO) {
+            val extras = data!!.extras
+            val image = extras?.get("data") as Bitmap
+            compressedImage = resize(image, 500, 500)
+            imageview_profile_image.setImageBitmap(compressedImage)
+        } else if (requestCode == REQUEST_IMAGE_GALLERY) {
+            val imageUri = data!!.data
+            val image = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
+            compressedImage = resize(image, 500, 500)
+            imageview_profile_image.setImageBitmap(compressedImage)
+        }
+        user?.run {
+            this.profileImage = bitmapToBytes(compressedImage)
+            AppDatabase.getInstance(context!!).userDao().update(this)
+        }
     }
 
     private fun showPictureDialog() {

@@ -75,7 +75,7 @@ class phoneInfoFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         if (!isPhonePermissionGranted()) {
-            view!!.findViewById<Button>(R.id.IMEIShowButton).apply {
+            view!!.findViewById<Button>(R.id.imei_show_button).apply {
                 setOnClickListener { tryShowIMEI() }
             }
         } else {
@@ -162,11 +162,11 @@ class phoneInfoFragment : Fragment() {
     }
 
     private fun showIMEI() {
-        view!!.findViewById<Button>(R.id.IMEIShowButton).apply {
+        view!!.findViewById<Button>(R.id.imei_show_button).apply {
             visibility = View.GONE
         }
 
-        view!!.findViewById<TextView>(R.id.IMEITextView).apply {
+        view!!.findViewById<TextView>(R.id.imei_text_view).apply {
             text = "IMEI: " + getIMEI()
         }
     }

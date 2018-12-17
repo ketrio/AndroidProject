@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="IMEI" android:id="@+id/phoneInfoFragment"
+    <item android:title="IMEI" android:id="@+id/phone_info_fragment"
           android:icon="@drawable/baseline_smartphone_black_48"/>
-    <item android:title="Profile" android:id="@+id/profileFragment"
+    <item android:title="Profile" android:id="@+id/profile_fragment"
           android:icon="@drawable/baseline_account_circle_black_36"/>
 </menu>

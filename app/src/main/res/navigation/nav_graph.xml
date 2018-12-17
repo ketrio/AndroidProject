@@ -2,19 +2,19 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
-            app:startDestination="@id/profileFragment">
+            app:startDestination="@id/profile_fragment">
 
-    <fragment android:id="@+id/blankFragment" android:name="com.example.ketrio.androidapp.BlankFragment"
+    <fragment android:id="@+id/blank_fragment" android:name="com.example.ketrio.androidapp.BlankFragment"
               android:label="fragment_blank" tools:layout="@layout/fragment_blank"/>
-    <fragment android:id="@+id/phoneInfoFragment" android:name="com.example.ketrio.androidapp.phoneInfoFragment"
+    <fragment android:id="@+id/phone_info_fragment" android:name="com.example.ketrio.androidapp.phoneInfoFragment"
               android:label="fragment_phone_info" tools:layout="@layout/fragment_phone_info"/>
-    <fragment android:id="@+id/profileFragment" android:name="com.example.ketrio.androidapp.ProfileFragment"
+    <fragment android:id="@+id/profile_fragment" android:name="com.example.ketrio.androidapp.ProfileFragment"
               android:label="fragment_profile" tools:layout="@layout/fragment_profile">
     </fragment>
-    <fragment android:id="@+id/blankFragment2" android:name="com.example.ketrio.androidapp.BlankFragment2"
+    <fragment android:id="@+id/blank_fragment2" android:name="com.example.ketrio.androidapp.BlankFragment2"
               android:label="fragment_blank_fragment2" tools:layout="@layout/fragment_blank_fragment2"/>
-    <fragment android:id="@+id/blankFragment3" android:name="com.example.ketrio.androidapp.BlankFragment3"
+    <fragment android:id="@+id/blank_fragment3" android:name="com.example.ketrio.androidapp.BlankFragment3"
               android:label="fragment_blank_fragment3" tools:layout="@layout/fragment_blank_fragment3"/>
-    <fragment android:id="@+id/editProfileFragment" android:name="com.example.ketrio.androidapp.EditProfileFragment"
+    <fragment android:id="@+id/edit_profile_fragment" android:name="com.example.ketrio.androidapp.EditProfileFragment"
               android:label="fragment_edit_profile" tools:layout="@layout/fragment_edit_profile"/>
 </navigation>

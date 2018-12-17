@@ -4,7 +4,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context=".phoneInfoFragment"
-             android:id="@+id/phoneInfoFragment">
+             android:id="@+id/phone_info_fragment">
     <Button
             android:text="SHOW IMEI"
             android:layout_width="wrap_content"
@@ -12,7 +12,7 @@
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:id="@+id/IMEIShowButton"
+            android:id="@+id/imei_show_button"
             android:gravity="center"
     />
     <TextView
@@ -21,7 +21,7 @@
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:id="@+id/IMEITextView"
+            android:id="@+id/imei_text_view"
             android:gravity="center"
     />
 </RelativeLayout>
