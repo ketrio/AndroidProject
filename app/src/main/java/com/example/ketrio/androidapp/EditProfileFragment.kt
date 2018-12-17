@@ -23,12 +23,16 @@ import org.jetbrains.anko.uiThread
 import android.graphics.Bitmap
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.inputmethod.InputMethodManager
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.ketrio.androidapp.utils.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.jetbrains.anko.imageBitmap
 import java.io.File
+import androidx.core.content.ContextCompat.getSystemService
+
+
 
 
 class EditProfileFragment : androidx.fragment.app.Fragment() {
@@ -76,6 +80,7 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
                         } else {
                             text_input_full_name_layout.setError(null)
                         }
+                        checkErrors()
                     }
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
@@ -88,6 +93,7 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
                         } else {
                             text_input_phone_layout.setError(null)
                         }
+                        checkErrors()
                     }
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
@@ -100,6 +106,7 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
                         } else {
                             text_input_email_layout.setError(null)
                         }
+                        checkErrors()
                     }
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
@@ -114,11 +121,31 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
                 this.email = text_input_email.text.toString()
 
                 AppDatabase.getInstance(context!!).userDao().update(this)
+
+                val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+
                 activity?.findViewById<View>(R.id.nav_host_fragment)?.findNavController()?.navigate(R.id.profile_fragment)
             }
         }
 
         return view
+    }
+
+    private fun checkErrors() {
+        val hasErrors = arrayOf(text_input_email_layout, text_input_full_name_layout, text_input_phone_layout).map {
+                it -> it.error
+        }.any {
+                it -> it != null
+        }
+
+
+        val fab = activity?.findViewById<FloatingActionButton>(R.id.floating_action_button)
+        if (hasErrors) {
+            fab?.hide()
+        } else {
+            fab?.show()
+        }
     }
 
     override fun onAttach(context: Context) {
