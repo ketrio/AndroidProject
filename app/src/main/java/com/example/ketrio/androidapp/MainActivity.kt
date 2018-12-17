@@ -33,22 +33,7 @@ class MainActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(nav_host_fragment) as NavHostFragment
-        findViewById<BottomNavigationView>(R.id.bottom_navigation_view)?.let { bottomNavigationView ->
-            NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
-        }
-
-        intent?.data?.let {
-            val pageNum = it.lastPathSegment?.toString()?.toIntOrNull()
-            when(pageNum) {
-                1 -> navHostFragment.navController.navigate(blank_fragment)
-                2 -> navHostFragment.navController.navigate(blank_fragment2)
-                3 -> navHostFragment.navController.navigate(blank_fragment3)
-                else -> {
-
-                }
-            }
-        }
+        setupNavigation()
 
         doAsync {
             val db = AppDatabase.getInstance(this@MainActivity)
@@ -86,4 +71,24 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
+    fun setupNavigation() {
+        val navHostFragment = supportFragmentManager.findFragmentById(nav_host_fragment) as NavHostFragment
+        findViewById<BottomNavigationView>(R.id.bottom_navigation_view)?.let { bottomNavigationView ->
+            NavigationUI.setupWithNavController(bottomNavigationView, navHostFragment.navController)
+        }
+
+        intent?.data?.let {
+            val pageNum = it.lastPathSegment?.toString()?.toIntOrNull()
+            when(pageNum) {
+                1 -> navHostFragment.navController.navigate(blank_fragment)
+                2 -> navHostFragment.navController.navigate(blank_fragment2)
+                3 -> navHostFragment.navController.navigate(blank_fragment3)
+                else -> {
+
+                }
+            }
+        }
+
+
+    }
 }
