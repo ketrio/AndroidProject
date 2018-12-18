@@ -15,7 +15,7 @@ import android.content.ContentResolver
 
 fun bitmapToBytes(bmp: Bitmap): ByteArray {
     val stream = ByteArrayOutputStream()
-    bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+    bmp.compress(Bitmap.CompressFormat.WEBP, 100, stream)
     return stream.toByteArray()
 }
 

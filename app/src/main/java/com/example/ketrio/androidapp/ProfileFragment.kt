@@ -1,25 +1,24 @@
 package com.example.ketrio.androidapp
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.net.Uri
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import com.example.ketrio.androidapp.data.AppDatabase
 import com.example.ketrio.androidapp.data.entity.User
 import com.example.ketrio.androidapp.utils.bytesToBitmap
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.image
 import org.jetbrains.anko.uiThread
 
 
@@ -37,18 +36,48 @@ class ProfileFragment : Fragment() {
             activity?.findViewById<View>(R.id.nav_host_fragment)?.findNavController()?.navigate(R.id.edit_profile_fragment)
         }
 
-        doAsync {
-            val user: User? = AppDatabase.getInstance(context!!).userDao().get()
 
-            uiThread {
-                textview_full_name.text = user?.fullName
-                textview_phone_number.text = user?.phoneNumber
-                textview_email.text = user?.email
-                imageview_profile_image.setImageBitmap(bytesToBitmap(user?.profileImage!!))
-            }
+        doAsync {
+            val db = FirebaseDatabase.getInstance()
+            val userRef = db.getReference("users").child("0")
+
+            userRef.addValueEventListener(object: ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+                    activity?.findViewById<TextView>(R.id.textview_full_name)?.setText(p0.message)
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    val user = p0.getValue(User::class.java)
+
+                    activity?.findViewById<TextView>(R.id.textview_full_name)?.setText(user?.fullName)
+                    activity?.findViewById<TextView>(R.id.textview_email)?.setText(user?.email)
+                    activity?.findViewById<TextView>(R.id.textview_phone_number)?.setText(user?.phoneNumber)
+
+                    user?.customPhoto?.run {
+                        if (this) {
+                            loadPhoto()
+                        } else {
+                            activity?.findViewById<ImageView>(R.id.imageview_profile_image)?.setImageBitmap(
+                                BitmapFactory.decodeResource(activity?.resources, R.drawable.profile_image)
+                            )
+                        }
+                    }
+                }
+            })
         }
 
         return view
+    }
+
+    private fun loadPhoto() {
+        val storageRef = FirebaseStorage.getInstance().reference
+        val photoRef = storageRef.child("photos").child("0.webp")
+
+        photoRef.getBytes(3000000).addOnSuccessListener {
+            activity?.findViewById<ImageView>(R.id.imageview_profile_image)?.setImageBitmap(
+                bytesToBitmap(it)
+            )
+        }
     }
 
     override fun onAttach(context: Context) {
