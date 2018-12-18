@@ -43,6 +43,7 @@
                             android:id="@+id/text_input_full_name_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:errorEnabled="true"
                             android:hint="Fullname">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -75,6 +76,7 @@
                             android:id="@+id/text_input_phone_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            app:errorEnabled="true"
                             android:hint="Phone">
 
                         <com.google.android.material.textfield.TextInputEditText
