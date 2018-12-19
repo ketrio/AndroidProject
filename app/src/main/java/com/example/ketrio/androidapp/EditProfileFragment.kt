@@ -16,7 +16,9 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import androidx.navigation.findNavController
 import com.example.ketrio.androidapp.utils.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
@@ -26,6 +28,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
+import org.jetbrains.anko.doAsync
 
 
 class EditProfileFragment : androidx.fragment.app.Fragment() {
@@ -46,9 +49,37 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        doAsync {
+            loadData(view)
+
+        }
+
         setupCircleImage(view)
-        setupData(view)
         setupInputValidation(view)
+        setupSaveButton(view)
+    }
+
+    private fun setupSaveButton(view: View) {
+        val saveButton = view.findViewById<FloatingActionButton>(R.id.floating_action_button)
+        val fullnameInput = view.findViewById<TextInputEditText>(R.id.text_input_full_name)
+        val phoneInput = view.findViewById<TextInputEditText>(R.id.text_input_phone)
+        val emailInput = view.findViewById<TextInputEditText>(R.id.text_input_email)
+
+        saveButton.setOnClickListener {
+            val db = FirebaseDatabase.getInstance()
+            val userRef = db.reference.child("users").child("0")
+
+            userRef.updateChildren(mapOf(
+                "fullName" to fullnameInput.text.toString(),
+                "phoneNumber" to phoneInput.text.toString(),
+                "email" to emailInput.text.toString()
+            ))
+
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+
+            activity?.findViewById<View>(R.id.nav_host_fragment)?.findNavController()?.navigate(R.id.profile_fragment)
+        }
     }
 
     private fun setupCircleImage(view: View) {
@@ -57,7 +88,7 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    private fun setupData(view: View) {
+    private fun loadData(view: View) {
         val db = FirebaseDatabase.getInstance()
         val userRef = db.reference.child("users").child("0")
 
@@ -103,7 +134,7 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
                 } else {
                     fullnameLayout.error = null
                 }
-                checkErrors()
+                checkErrors(view)
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
@@ -116,7 +147,7 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
                 } else {
                     phoneLayout.error = null
                 }
-                checkErrors()
+                checkErrors(view)
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
@@ -129,22 +160,25 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
                 } else {
                     emailLayout.error = null
                 }
-                checkErrors()
+                checkErrors(view)
             }
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
         })
     }
 
-    private fun checkErrors() {
-        val hasErrors = arrayOf(text_input_email_layout, text_input_full_name_layout, text_input_phone_layout).map {
+    private fun checkErrors(view: View) {
+        val fullnameLayout = view.findViewById<TextInputLayout>(R.id.text_input_full_name_layout)
+        val phoneLayout = view.findViewById<TextInputLayout>(R.id.text_input_phone_layout)
+        val emailLayout = view.findViewById<TextInputLayout>(R.id.text_input_email_layout)
+
+        val hasErrors = arrayOf(fullnameLayout, phoneLayout, emailLayout).map {
                 it -> it.error
         }.any {
                 it -> it != null
         }
 
-
-        val fab = activity?.findViewById<FloatingActionButton>(R.id.floating_action_button)
+        val fab = view.findViewById<FloatingActionButton>(R.id.floating_action_button)
         if (hasErrors) {
             fab?.hide()
         } else {
