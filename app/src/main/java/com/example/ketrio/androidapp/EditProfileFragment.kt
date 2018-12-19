@@ -12,23 +12,20 @@ import android.content.Intent
 import android.provider.MediaStore
 import com.example.ketrio.androidapp.data.entity.User
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import androidx.navigation.findNavController
 import com.example.ketrio.androidapp.utils.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
-import java.io.ByteArrayOutputStream
 
 
 class EditProfileFragment : androidx.fragment.app.Fragment() {
@@ -43,14 +40,30 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_edit_profile, container, false)
+        return inflater.inflate(R.layout.fragment_edit_profile, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupCircleImage(view)
+        setupData(view)
+        setupInputValidation(view)
+    }
+
+    private fun setupCircleImage(view: View) {
         view.findViewById<View>(R.id.imageview_profile_image).setOnClickListener {
             showPictureDialog()
         }
+    }
 
+    private fun setupData(view: View) {
         val db = FirebaseDatabase.getInstance()
         val userRef = db.reference.child("users").child("0")
+
+        val fullnameInput = view.findViewById<TextInputEditText>(R.id.text_input_full_name)
+        val phoneInput = view.findViewById<TextInputEditText>(R.id.text_input_phone)
+        val emailInput = view.findViewById<TextInputEditText>(R.id.text_input_email)
 
         userRef.addValueEventListener(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError) { }
@@ -58,61 +71,69 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
             override fun onDataChange(p0: DataSnapshot) {
                 val user = p0.getValue(User::class.java)
 
-                text_input_full_name.setText(user?.fullName)
-                text_input_email.setText(user?.email)
-                text_input_phone.setText(user?.phoneNumber)
+                fullnameInput.setText(user?.fullName)
+                emailInput.setText(user?.email)
+                phoneInput.setText(user?.phoneNumber)
 
                 if (user?.customPhoto == false) {
-                    activity?.findViewById<ImageView>(R.id.imageview_profile_image)?.setImageBitmap(
+                    view.findViewById<ImageView>(R.id.imageview_profile_image).setImageBitmap(
                         BitmapFactory.decodeResource(activity?.resources, R.drawable.profile_image)
                     )
                 } else {
                     loadPhoto()
                 }
-
-                text_input_full_name.addTextChangedListener(object: TextWatcher {
-                    override fun afterTextChanged(s: Editable?) {
-                        isDirty = true
-                        if (!isValidFullname(s.toString())) {
-                            text_input_full_name_layout.error = "Fullname should consist at least of 2 words"
-                        } else {
-                            text_input_full_name_layout.error = null
-                        }
-                        checkErrors()
-                    }
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
-                })
-                text_input_phone.addTextChangedListener(object: TextWatcher {
-                    override fun afterTextChanged(s: Editable?) {
-                        isDirty = true
-                        if (!isValidMobile(s.toString())) {
-                            text_input_phone_layout.error = "Invalid phone number"
-                        } else {
-                            text_input_phone_layout.error = null
-                        }
-                        checkErrors()
-                    }
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
-                })
-                text_input_email.addTextChangedListener(object: TextWatcher {
-                    override fun afterTextChanged(s: Editable?) {
-                        isDirty = true
-                        if (!isValidEmail(s.toString())) {
-                            text_input_email_layout.error = "Invalid email"
-                        } else {
-                            text_input_email_layout.error = null
-                        }
-                        checkErrors()
-                    }
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
-                })
             }
         })
+    }
 
-        return view
+    private fun setupInputValidation(view: View) {
+        val fullnameInput = view.findViewById<TextInputEditText>(R.id.text_input_full_name)
+        val phoneInput = view.findViewById<TextInputEditText>(R.id.text_input_phone)
+        val emailInput = view.findViewById<TextInputEditText>(R.id.text_input_email)
+
+        val fullnameLayout = fullnameInput.parent.parent as TextInputLayout
+        val phoneLayout = phoneInput.parent.parent as TextInputLayout
+        val emailLayout = emailInput.parent.parent as TextInputLayout
+
+        fullnameInput.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                isDirty = true
+                if (!isValidFullname(s.toString())) {
+                    fullnameLayout.error = "Fullname should consist at least of 2 words"
+                } else {
+                    fullnameLayout.error = null
+                }
+                checkErrors()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+        })
+        phoneInput.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                isDirty = true
+                if (!isValidMobile(s.toString())) {
+                    phoneLayout.error = "Invalid phone number"
+                } else {
+                    phoneLayout.error = null
+                }
+                checkErrors()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+        })
+        emailInput.addTextChangedListener(object: TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                isDirty = true
+                if (!isValidEmail(s.toString())) {
+                    emailLayout.error = "Invalid email"
+                } else {
+                    emailLayout.error = null
+                }
+                checkErrors()
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+        })
     }
 
     private fun checkErrors() {

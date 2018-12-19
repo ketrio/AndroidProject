@@ -32,15 +32,9 @@
                         android:layout_marginTop="100dp"
                         android:orientation="vertical">
 
-                    <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="PROFILE DETAILS"
-                            android:textStyle="bold" />
-
                     <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/text_input_full_name_layout"
+                            android:layout_marginTop="20dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:errorEnabled="true"
