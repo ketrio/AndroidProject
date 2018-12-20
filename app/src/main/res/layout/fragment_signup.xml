@@ -4,7 +4,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:fitsSystemWindows="true">
-
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -13,7 +12,16 @@
             android:paddingLeft="24dp"
             android:paddingRight="24dp">
 
+        <ProgressBar
+                android:id="@+id/indeterminateBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center"
+        />
+
         <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_name_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -27,6 +35,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_email_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -40,6 +49,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_password_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

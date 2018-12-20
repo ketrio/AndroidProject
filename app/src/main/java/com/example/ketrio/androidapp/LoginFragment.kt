@@ -15,13 +15,24 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import android.R.id.button2
 import android.R.id.button1
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 
 
 class LoginFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
+    @BindView(R.id.btn_login)
+    lateinit var loginButton: Button
+
     @BindView(R.id.link_signup)
     lateinit var _signupLink: TextView
+
+    @BindView(R.id.input_email)
+    lateinit var emailInput: EditText
+
+    @BindView(R.id.input_password)
+    lateinit var passwordInput: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +48,19 @@ class LoginFragment : Fragment() {
 
         _signupLink.setOnClickListener {
             activity?.findViewById<View>(R.id.nav_host_fragment)?.findNavController()?.navigate(R.id.signupFragment)
+        }
+
+        loginButton.setOnClickListener {
+            if (emailInput.text.isNotEmpty() && passwordInput.text.isNotEmpty()) {
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(
+                    emailInput.text.toString(),
+                    passwordInput.text.toString()
+                ).addOnSuccessListener {
+                    (activity as AuthActivity).startMain()
+                }.addOnFailureListener {
+                    Snackbar.make(view, it.message.toString(), Snackbar.LENGTH_LONG)
+                }
+            }
         }
     }
 
