@@ -11,6 +11,7 @@ import androidx.navigation.ui.NavigationUI
 import com.example.ketrio.androidapp.R.id.*
 import com.example.ketrio.androidapp.data.entity.User
 import com.example.ketrio.androidapp.utils.bitmapToBytes
+import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.FirebaseDatabase
 import org.jetbrains.anko.doAsync
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity(),
     ProfileFragment.OnFragmentInteractionListener, BlankFragment2.OnFragmentInteractionListener,
     BlankFragment3.OnFragmentInteractionListener, EditProfileFragment.OnFragmentInteractionListener
 {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
