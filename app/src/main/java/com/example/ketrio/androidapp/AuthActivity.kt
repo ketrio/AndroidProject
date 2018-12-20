@@ -16,6 +16,7 @@ import android.app.Dialog
 import android.view.Window.FEATURE_NO_TITLE
 import android.view.LayoutInflater
 import android.view.Window
+import com.google.firebase.auth.FirebaseAuth
 
 
 class AuthActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionListener, SignupFragment.OnFragmentInteractionListener {
@@ -25,6 +26,12 @@ class AuthActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        FirebaseAuth.getInstance().currentUser?.let {
+            startMain()
+            return
+        }
+
         setContentView(R.layout.activity_auth)
         ButterKnife.bind(this)
     }

@@ -64,7 +64,7 @@ class LoginFragment : Fragment() {
         ).addOnSuccessListener {
             (activity as AuthActivity).startMain()
         }.addOnFailureListener {
-            Snackbar.make(view, it.message.toString(), Snackbar.LENGTH_LONG)
+            Snackbar.make(view, it.localizedMessage, Snackbar.LENGTH_LONG).show()
         }.addOnCompleteListener {
             listener?.stopProgress()
         }

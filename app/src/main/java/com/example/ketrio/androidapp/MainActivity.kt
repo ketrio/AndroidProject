@@ -1,5 +1,6 @@
 package com.example.ketrio.androidapp
 
+import android.content.Intent
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,7 @@ import com.example.ketrio.androidapp.data.entity.User
 import com.example.ketrio.androidapp.utils.bitmapToBytes
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import org.jetbrains.anko.doAsync
 
