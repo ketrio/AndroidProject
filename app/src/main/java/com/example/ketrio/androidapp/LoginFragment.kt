@@ -1,5 +1,6 @@
 package com.example.ketrio.androidapp
 
+import android.R.id.*
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -13,8 +14,6 @@ import android.widget.EditText
 import androidx.navigation.findNavController
 import butterknife.BindView
 import butterknife.ButterKnife
-import android.R.id.button2
-import android.R.id.button1
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
@@ -52,15 +51,22 @@ class LoginFragment : Fragment() {
 
         loginButton.setOnClickListener {
             if (emailInput.text.isNotEmpty() && passwordInput.text.isNotEmpty()) {
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(
-                    emailInput.text.toString(),
-                    passwordInput.text.toString()
-                ).addOnSuccessListener {
-                    (activity as AuthActivity).startMain()
-                }.addOnFailureListener {
-                    Snackbar.make(view, it.message.toString(), Snackbar.LENGTH_LONG)
-                }
+                listener?.startProgress()
+                login(view)
             }
+        }
+    }
+
+    private fun login(view: View) {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(
+            emailInput.text.toString(),
+            passwordInput.text.toString()
+        ).addOnSuccessListener {
+            (activity as AuthActivity).startMain()
+        }.addOnFailureListener {
+            Snackbar.make(view, it.message.toString(), Snackbar.LENGTH_LONG)
+        }.addOnCompleteListener {
+            listener?.stopProgress()
         }
     }
 
@@ -79,5 +85,7 @@ class LoginFragment : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
+        fun startProgress()
+        fun stopProgress()
     }
 }

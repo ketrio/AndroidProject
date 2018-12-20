@@ -19,12 +19,15 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import android.widget.EditText
 import android.widget.ProgressBar
+import androidx.annotation.UiThread
 import com.example.ketrio.androidapp.utils.isValidEmail
 import com.example.ketrio.androidapp.utils.isValidFullname
 import com.example.ketrio.androidapp.utils.isValidPassword
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 
 class SignupFragment : Fragment() {
@@ -77,6 +80,7 @@ class SignupFragment : Fragment() {
 
         _signupButton.setOnClickListener {
             if (validateForm()) {
+                listener?.startProgress()
                 signup(view)
             }
         }
@@ -90,6 +94,8 @@ class SignupFragment : Fragment() {
             (activity as AuthActivity).startMain()
         }.addOnFailureListener {
             Snackbar.make(view, it.message.toString(), Snackbar.LENGTH_LONG).show()
+        }.addOnCompleteListener {
+            listener?.stopProgress()
         }
     }
 
@@ -108,6 +114,8 @@ class SignupFragment : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
+        fun startProgress()
+        fun stopProgress()
     }
 
     private fun validateForm(): Boolean {

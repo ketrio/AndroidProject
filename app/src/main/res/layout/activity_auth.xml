@@ -7,12 +7,19 @@
         android:layout_height="match_parent"
         tools:context="com.example.ketrio.androidapp.AuthActivity">
 
-    <fragment
-            android:id="@+id/nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/auth_graph" />
-
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <fragment
+                android:id="@+id/nav_host_fragment"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/auth_graph"/>
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                android:id="@+id/progress_circular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="invisible"/>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

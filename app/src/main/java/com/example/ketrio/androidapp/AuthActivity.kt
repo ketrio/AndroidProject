@@ -19,6 +19,10 @@ import android.view.Window
 
 
 class AuthActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionListener, SignupFragment.OnFragmentInteractionListener {
+
+    @BindView(R.id.progress_circular)
+    lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
@@ -28,5 +32,15 @@ class AuthActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
     fun startMain() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
+    }
+
+    override fun startProgress() {
+        window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun stopProgress() {
+        progressBar.visibility = View.INVISIBLE
+        window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 }
