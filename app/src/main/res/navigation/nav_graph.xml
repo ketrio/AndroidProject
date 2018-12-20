@@ -17,4 +17,8 @@
               android:label="fragment_blank_fragment3" tools:layout="@layout/fragment_blank_fragment3"/>
     <fragment android:id="@+id/edit_profile_fragment" android:name="com.example.ketrio.androidapp.EditProfileFragment"
               android:label="fragment_edit_profile" tools:layout="@layout/fragment_edit_profile"/>
+    <fragment android:id="@+id/loginFragment" android:name="com.example.ketrio.androidapp.LoginFragment"
+              android:label="fragment_login" tools:layout="@layout/fragment_login"/>
+    <fragment android:id="@+id/signupFragment" android:name="com.example.ketrio.androidapp.SignupFragment"
+              android:label="fragment_signup" tools:layout="@layout/fragment_signup"/>
 </navigation>

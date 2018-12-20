@@ -56,6 +56,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="loginFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-558" />
+                            <option name="y" value="-318" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="phone_info_fragment">
                     <value>
                       <LayoutPositions>
@@ -75,6 +87,18 @@
                           <Point>
                             <option name="x" value="-359" />
                             <option name="y" value="10" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="signupFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-659" />
+                            <option name="y" value="-332" />
                           </Point>
                         </option>
                       </LayoutPositions>
