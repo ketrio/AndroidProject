@@ -16,6 +16,7 @@ import android.app.Dialog
 import android.view.Window.FEATURE_NO_TITLE
 import android.view.LayoutInflater
 import android.view.Window
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -23,6 +24,8 @@ class AuthActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
 
     @BindView(R.id.progress_circular)
     lateinit var progressBar: ProgressBar
+    @BindView(R.id.progress_layout)
+    lateinit var progressLayout: ConstraintLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +47,12 @@ class AuthActivity : AppCompatActivity(), LoginFragment.OnFragmentInteractionLis
     override fun startProgress() {
         window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
         progressBar.visibility = View.VISIBLE
+        progressLayout.visibility = View.VISIBLE
     }
 
     override fun stopProgress() {
         progressBar.visibility = View.INVISIBLE
+        progressLayout.visibility = View.INVISIBLE
         window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     }
 }
