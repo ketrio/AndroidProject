@@ -23,6 +23,7 @@ import com.example.ketrio.androidapp.utils.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -49,13 +50,9 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        doAsync {
-            loadData(view)
-
-        }
+        loadData(view)
 
         setupCircleImage(view)
-        setupInputValidation(view)
         setupSaveButton(view)
     }
 
@@ -66,8 +63,10 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
         val emailInput = view.findViewById<TextInputEditText>(R.id.text_input_email)
 
         saveButton.setOnClickListener {
+            val authUser = FirebaseAuth.getInstance().currentUser
+
             val db = FirebaseDatabase.getInstance()
-            val userRef = db.reference.child("users").child("0")
+            val userRef = db.reference.child("users").child(authUser?.uid.toString())
 
             userRef.updateChildren(mapOf(
                 "fullName" to fullnameInput.text.toString(),
@@ -89,8 +88,10 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun loadData(view: View) {
+        val authUser = FirebaseAuth.getInstance().currentUser
+
         val db = FirebaseDatabase.getInstance()
-        val userRef = db.reference.child("users").child("0")
+        val userRef = db.reference.child("users").child(authUser?.uid.toString())
 
         val fullnameInput = view.findViewById<TextInputEditText>(R.id.text_input_full_name)
         val phoneInput = view.findViewById<TextInputEditText>(R.id.text_input_phone)
@@ -113,6 +114,8 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
                 } else {
                     loadPhoto()
                 }
+
+                setupInputValidation(view)
             }
         })
     }
@@ -196,8 +199,10 @@ class EditProfileFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun loadPhoto() {
+        val authUser = FirebaseAuth.getInstance().currentUser
+
         val storageRef = FirebaseStorage.getInstance().reference
-        val photoRef = storageRef.child("photos").child("0.webp")
+        val photoRef = storageRef.child("photos").child("""${authUser?.uid}.webp""")
 
         photoRef.getBytes(3000000).addOnSuccessListener {
             activity?.findViewById<ImageView>(R.id.imageview_profile_image)?.setImageBitmap(

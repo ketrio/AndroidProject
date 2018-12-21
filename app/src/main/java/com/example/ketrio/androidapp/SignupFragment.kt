@@ -26,15 +26,13 @@ import com.example.ketrio.androidapp.utils.isValidPassword
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
 
 class SignupFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
-
-    @BindView(R.id.indeterminateBar)
-    lateinit var _progressBar: ProgressBar
 
     @BindView(R.id.input_name_layout)
     lateinit var _nameLayout: TextInputLayout
@@ -91,6 +89,9 @@ class SignupFragment : Fragment() {
             _emailText.text.toString(),
             _passwordText.text.toString()
         ).addOnSuccessListener {
+            val profileUpdates = UserProfileChangeRequest.Builder()
+                        .setDisplayName(_nameText.text.toString()).build();
+            it.user.updateProfile(profileUpdates)
             (activity as AuthActivity).startMain()
         }.addOnFailureListener {
             Snackbar.make(view, it.localizedMessage, Snackbar.LENGTH_LONG).show()

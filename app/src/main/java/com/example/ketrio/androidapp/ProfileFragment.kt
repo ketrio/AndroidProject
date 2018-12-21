@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.navigation.findNavController
 import com.example.ketrio.androidapp.data.entity.User
 import com.example.ketrio.androidapp.utils.bytesToBitmap
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -38,8 +39,9 @@ class ProfileFragment : Fragment() {
 
 
         doAsync {
+            val authUser = FirebaseAuth.getInstance().currentUser
             val db = FirebaseDatabase.getInstance()
-            val userRef = db.getReference("users").child("0")
+            val userRef = db.getReference("users").child(authUser?.uid.toString())
 
             userRef.addValueEventListener(object: ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {
@@ -47,21 +49,20 @@ class ProfileFragment : Fragment() {
                 }
 
                 override fun onDataChange(p0: DataSnapshot) {
-                    val user = p0.getValue(User::class.java)
+                    var user = p0.getValue(User::class.java)
 
-                    activity?.findViewById<TextView>(R.id.textview_full_name)?.setText(user?.fullName)
-                    activity?.findViewById<TextView>(R.id.textview_email)?.setText(user?.email)
-                    activity?.findViewById<TextView>(R.id.textview_phone_number)?.setText(user?.phoneNumber)
-
-                    user?.customPhoto?.run {
-                        if (this) {
-                            loadPhoto()
-                        } else {
-                            activity?.findViewById<ImageView>(R.id.imageview_profile_image)?.setImageBitmap(
-                                BitmapFactory.decodeResource(activity?.resources, R.drawable.profile_image)
-                            )
-                        }
+                    if (user == null) {
+                        user = User(
+                            authUser?.displayName,
+                            null,
+                            authUser?.email,
+                            false
+                        )
+                        userRef.setValue(user)
                     }
+
+
+                    displayUser(user)
                 }
             })
         }
@@ -69,9 +70,27 @@ class ProfileFragment : Fragment() {
         return view
     }
 
+    private fun displayUser(user: User?) {
+        activity?.findViewById<TextView>(R.id.textview_full_name)?.text = if (user?.fullName.isNullOrEmpty()) "No name" else user?.fullName
+        activity?.findViewById<TextView>(R.id.textview_email)?.text = if (user?.email.isNullOrEmpty()) "No email" else user?.email
+        activity?.findViewById<TextView>(R.id.textview_phone_number)?.text = if (user?.phoneNumber.isNullOrEmpty()) "No phone" else user?.phoneNumber
+
+        user?.customPhoto?.run {
+            if (this) {
+                loadPhoto()
+            } else {
+                activity?.findViewById<ImageView>(R.id.imageview_profile_image)?.setImageBitmap(
+                    BitmapFactory.decodeResource(activity?.resources, R.drawable.profile_image)
+                )
+            }
+        }
+    }
+
     private fun loadPhoto() {
+        val authUser = FirebaseAuth.getInstance().currentUser
+
         val storageRef = FirebaseStorage.getInstance().reference
-        val photoRef = storageRef.child("photos").child("0.webp")
+        val photoRef = storageRef.child("photos").child("""${authUser?.uid}.webp""")
 
         photoRef.getBytes(3000000).addOnSuccessListener {
             activity?.findViewById<ImageView>(R.id.imageview_profile_image)?.setImageBitmap(
